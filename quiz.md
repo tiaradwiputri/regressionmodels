@@ -24,7 +24,6 @@ Based on the correlation plot above, we should know which variables has the high
 Based on the correlation information you have acquired, try to answer the following question
 
 1. Which variable has little to no correlation with crime rate variable?
-
   - [ ] crime_rate
   - [ ] police_exp59
   - [ ] unemploy_m39
@@ -44,17 +43,15 @@ From the data exploration process and the correlation information of `crime` dat
 After building `model_crime`, inspect the attributes of the model using summary function and use the information to answer the questions below.
 
 2. Which of the following best described the slope?**
-
-- [ ] It's a negative slope, and is statistically insignificant (P-value higher than 0.05)
-- [ ] It's a positive slope, and is statistically significant (P-value lower than 0.05)
-- [ ] It's a positive slope, and is statistically insignificant (P-value higher than 0.05)
-- [ ] It's a negative slope, and is statistically significant (P-value lower than 0.05)
+  - [ ] It's a negative slope, and is statistically insignificant (P-value higher than 0.05)
+  - [ ] It's a positive slope, and is statistically significant (P-value lower than 0.05)
+  - [ ] It's a positive slope, and is statistically insignificant (P-value higher than 0.05)
+  - [ ] It's a negative slope, and is statistically significant (P-value lower than 0.05)
 
 3. What is the most fitting conclusion from the regression model above?
-
-- [ ] The R-squared does not tell us about the quality of our model fit. That is the job of the p-value.
-- [ ] The R-squared approximates 0.44, indicating a reasonable fit (the closer to 0 the better)
-- [ ] The R-squared approximates 0.44, indicating a poor fit (the closer to 1 the better)
+  - [ ] The R-squared does not tell us about the quality of our model fit. That is the job of the p-value.
+  - [ ] The R-squared approximates 0.44, indicating a reasonable fit (the closer to 0 the better)
+  - [ ] The R-squared approximates 0.44, indicating a poor fit (the closer to 1 the better)
 
 # Feature Selection
 
@@ -74,10 +71,10 @@ We have learned a stepwise regression algorithm that enables us to perform an au
 After building the model, go ahead and check model_step summary and answer the question below.
 
 4. Based on the summary of our final model, which statement is incorrect?
-- [ ] An increase of 1 of police_exp60 causes the value of crime_rate to increase by 10,265
-- [ ] An increase of 1 of unemploy_m24 causes the crime_rate to decrease by 6,087
-- [ ] An increase of 1 of mean_education causes the value of crime_rate to decrease by 18.01
-- [ ] Adjusted R-squared is a better metrics for evaluating our model compared to R-squared
+  - [ ] An increase of 1 of police_exp60 causes the value of crime_rate to increase by 10,265
+  - [ ] An increase of 1 of unemploy_m24 causes the crime_rate to decrease by 6,087
+  - [ ] An increase of 1 of mean_education causes the value of crime_rate to decrease by 18.01
+  - [ ] Adjusted R-squared is a better metrics for evaluating our model compared to R-squared
 
 # Normality Assumption
 
@@ -103,11 +100,10 @@ $H_1$ : Error is not distributed normally
 There are varying way to check for normality assumption. Based on the information you have gained along the class, try to answer the following question:
 
 5. What are the method(s) we can use to check for normality of the residual from our model?
-
-- [ ] QQ plot
-- [ ] Shapiro-test
-- [ ] Adjusted R-Square
-- [ ] Correlation
+  - [ ] QQ plot
+  - [ ] Shapiro-test
+  - [ ] Adjusted R-Square
+  - [ ] Correlation
 
 # Heteroskedasticity Assumption
 
@@ -131,10 +127,10 @@ Validate wether or not our fitted data violates the no heteroscedasticiy assumpt
 Use the output from the test above to answer the following question:
 
 6. Based on Breusch-Pagan test we have perform, what conclusion can be drawn from the result?
-- [ ] Heteroscedasticity is not present
-- [ ] Heteroscedasticity is present
-- [ ] The data spreads normally
-- [ ] There is no correlation between residuals and target variable
+  - [ ] Heteroscedasticity is not present
+  - [ ] Heteroscedasticity is present
+  - [ ] The data spreads normally
+  - [ ] There is no correlation between residuals and target variable
 
 # No Multicollinearity Assumption
 
@@ -154,9 +150,9 @@ If there are no `vif` value bigger that is significantly larger than most, we ca
 Based on the VIF value from previous section, try to answer following question.
 
 7. From the multicolinearity test result, which interpretation is correct?
-- [ ] inequality does not significantly affect crime_rate
-- [ ] unemploy_m39 has weak correlation with unemploy_m24
-- [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
+  - [ ] inequality does not significantly affect crime_rate
+  - [ ] unemploy_m39 has weak correlation with unemploy_m24
+  - [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
 
 # Making Prediction
 
@@ -178,4 +174,7 @@ Within our workshop, we have also learned various metrics to measure our model p
 
 ```
 
-8. What is the MSE value of the crime_test prediction result? (round into two decimal points)     
+8. What is the MSE value of the crime_test prediction result? (round to two decimal points)    
+  - [ ] 35467.31
+  - [ ] 188.33
+  - [ ] 0.19
