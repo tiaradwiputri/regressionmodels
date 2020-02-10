@@ -70,11 +70,11 @@ We have learned a stepwise regression algorithm that enables us to perform an au
 
 After building the model, go ahead and check model_step summary and answer the question below.
 
-4. Based on the summary of our final model, which statement is incorrect?
+4. Based on the summary of our final model, which statement is **incorrect**?
   - [ ] An increase of 1 of police_exp60 causes the value of crime_rate to increase by 10,265
   - [ ] An increase of 1 of unemploy_m24 causes the crime_rate to decrease by 6,087
   - [ ] An increase of 1 of mean_education causes the value of crime_rate to decrease by 18.01
-  - [ ] Adjusted R-squared is a better metrics for evaluating our model compared to R-squared
+  - [ ] Adjusted R-squared is a better metrics for evaluating our model compared to Multiple R-squared
 
 # Normality Assumption
 
@@ -97,25 +97,25 @@ $H_1$ : Error is not distributed normally
 
 ## Quiz Section
 
-There are varying way to check for normality assumption. Based on the information you have gained along the class, try to answer the following question:
-
-5. What are the method(s) we can use to check for normality of the residual from our model?
-  - [ ] QQ plot
-  - [ ] Shapiro-test
-  - [ ] Adjusted R-Square
-  - [ ] Correlation
+Use the output from the test above to answer the following question:
+5. Based on Shapiro test we have perform, what conclusion can be drawn from the result?
+  - [ ] Error is distributed normally (P-value higher than 0.05) 
+  - [ ] Error is distributed normally (P-value lower than 0.05) 
+  - [ ] Error is not distributed normally (P-value higher than 0.05) 
+  - [ ] Error is not distributed normally (P-value lower than 0.05) 
+  
 
 # Heteroskedasticity Assumption
 
 ## Breusch-Pagan for Heteroskedasticity Test
 
-To test wether or not our data is homoscedastic, you can use Breusch-Pagan test for a formal statistical test. This test use the following null and alternative hypothesis:
+To test wether or not our error is homoscedastic, you can use Breusch-Pagan test for a formal statistical test. This test use the following null and alternative hypothesis:
 
-$H_0$: Data is considered Homoscedastic
+$H_0$: Error is considered Homoscedastic
 
-$H_1$: Data is considered Heteroscedastic
+$H_1$: Error is considered Heteroscedastic
 
-Validate wether or not our fitted data violates the no heteroscedasticiy assumption using `bptest` function from `lmtest` package. Pass in our `model_step` as the parameter to acquire the test result.
+Validate wether or not our error violates the no heteroscedasticiy assumption using `bptest` function from `lmtest` package. Pass in our `model_step` as the parameter to acquire the test result.
 
 ```
 # your code here
@@ -136,14 +136,14 @@ Use the output from the test above to answer the following question:
 
 ## Variance Inflation Factor
 
-In linear regression, each predictor is assumed to be independent to each other. To test this, you can use the `vif` function of the`car` package to acquire each predictor variable’s `VIF` value. Let’s take our `model_step` object and pass in to the function and see if there any multicollinearity present.
+In linear regression, each predictor is assumed to be independent to each other. To test this, you can use the `vif` function of the `car` package to acquire each predictor variable’s `VIF` value. Let’s take our `model_step` object and pass in to the function and see if there any multicollinearity present.
 
 ```
 # your code here
 
 ```
 
-If there are no `vif` value bigger that is significantly larger than most, we can safely assume that there are no multicollinearity between the variables.
+If the `VIF` value is not greater than the value that is considered significant, we can safely assume that there are no multicollinearity between the variables.
 
 ## Quiz Section
 
@@ -151,14 +151,15 @@ Based on the VIF value from previous section, try to answer following question.
 
 7. From the multicolinearity test result, which interpretation is correct?
   - [ ] inequality does not significantly affect crime_rate
-  - [ ] unemploy_m39 has weak correlation with unemploy_m24
   - [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
+  - [ ] Multicollinearity is present in our model because the VIF values for all variables are below 10 
+  - [ ] Variables with multicollinearity should not be removed from model
 
 # Making Prediction
 
 ## Predict Unseen Data
 
-Since we have passed all our assumption test on previous sections, we will try to predict unseen data using `model_step` object. We have provided `crime_test` dataset in your environment for you to use with `predict` function. Store the prediction value from our new data set under `pred_value` object.
+Since we have passed all our assumption test on previous sections, we will try to predict unseen data using `model_step` object. We have provided `crime_test.csv` dataset in github repository for you to use with `predict` function. Store the prediction value from our new data set under `pred_value` object.
 
 ```
 # your code here
@@ -175,6 +176,6 @@ Within our workshop, we have also learned various metrics to measure our model p
 ```
 
 8. What is the MSE value of the crime_test prediction result? (round to two decimal points)    
-  - [ ] 35467.31
-  - [ ] 188.33
-  - [ ] 0.19
+  - [ ] 55027.7
+  - [ ] 46447.42
+  - [ ] 45269.15
