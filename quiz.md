@@ -1,181 +1,155 @@
-# Data Exploration
+# Regression Model Quiz
 
-In this quiz, you will be using criminologists data (`crime`). The data has been loaded on the chunk environment. Before you perform a linear regression using this dataset, you will need to explore the data to get information about the data. Common data inspection includes:
+This quiz is part of Algoritma Academy assessment process. Congratulations on completing the Regression Model course! We will conduct an assessment quiz to test practical regression model techniques you have learned on the course. The quiz is expected to be taken in the classroom, please contact our team of instructors if you missed the chance to take it in class.
 
-* Peek in the first or last 6 data from ‘crime’ data! Choose between using `head` or `tail` function.
-* Inspect all available columns by inspecting the data using str
+## Data Exploration
+
+In this quiz, you will be using criminologist dataset (`crime`) stored under the `data_input` folder. If you have been following along in the course you can use the one that has already been loaded in the environment or you can run the following chunk in your RMarkdown to make sure we are using a same column names:
+
+```
+crime <- read.csv("data_input/crime.csv") %>% 
+   select(-X) 
+colnames(crime) <- c("percent_m", "is_south", "mean_education", "police_exp60", "police_exp59", "labour_participation", "m_per1000f", "state_pop", "nonwhites_per1000", "unemploy_m24", "unemploy_m39", "gdp", "inequality", "prob_prison", "time_prison", "crime_rate")
+```
+
+To make sure you have loaded the data correctly, do a simple inspection of the data. Try to peek in using `head` or `tail` and see if the columns have been stored in its appropriate data types.
+```
+# your code here
+
+```
+
+Among all variables within our `crime` dataset, there is a `crime_rate` variable that describes the measure of crime rate of the United States in 1960 from different states. Imagine you’re working as a government analyst and would like to see how social-economic conditions could reflect on the crime rate in a state. Recall how we can inspect the correlation for each variable using `cor` or `ggcorr` from `GGally` package. Try it out on your own and see what are the possible predictor variables for our `crime_rate` variable.
 
 ```
 # your code here
 
 ```
 
-Among the variables within our `crime` dataset, we can see a `crime_rate` variable that describes `crime` rate in a country at 1960. Recall how we can try to inspect the correlation for each variables using `cor` or `ggcorr` from `GGally` package. Try it out on your own and see what are the possible predictor variables for our `crime_rate` variables.
-
-```
-# your code here
-
-```
-
-Based on the correlation plot above, we should know which variables has the highest or lowest correlation with our crime_rate. Using the correlation value, we can choose the variables as our variable predictor.
-
-## Quiz Section
-
-Based on the correlation information you have acquired, try to answer the following question
-
-1. Which variable has little to no correlation with crime rate variable?
+Based on the result of the previous chunk, you should know each variable’s correlation with `crime_rate` variable. Referring to the value, we can perform a preliminary variable selection for a suitable predictor variable.
+___
+1. Which variable has little to no correlation with our `crime_rate` variable and might not be suitable as a predictor variable?
   - [ ] crime_rate
   - [ ] police_exp59
   - [ ] unemploy_m39
   - [ ] nonwhites_per1000
+___
 
-# Build Linear Model    
+## Building Linear Regression    
 
-From the data exploration process and the correlation information of `crime` dataset, we know that not all variables indicates a strong correlation with `crime_rate`. Let’s try to build a simple linear model using one of the highly correlated variable: `police_exp59`. Create a regression model using `lm()` function to predict `crime_rate` using `police_exp59` from crime dataset and assign it to an object named `model_crime`.
+From the data exploration process and the correlation information of our dataset, it is known that not all variables show a strong correlation with `crime_rate` variable. Let’s try to build a simple linear model using one of the highly correlated variables: `police_exp59`. Create a regression model using `lm()` function to predict `crime_rate` using `police_exp59` from our dataset and assign it to an object named `model_crime`.
 
 ```
 # your code here
 
 ```
-
-## Quiz Section
-
-After building `model_crime`, inspect the attributes of the model using summary function and use the information to answer the questions below.
-
-2. Which of the following best described the slope?**
+___
+2. Which of the following best describes the slope?**
   - [ ] It's a negative slope, and is statistically insignificant (P-value higher than 0.05)
   - [ ] It's a positive slope, and is statistically significant (P-value lower than 0.05)
   - [ ] It's a positive slope, and is statistically insignificant (P-value higher than 0.05)
   - [ ] It's a negative slope, and is statistically significant (P-value lower than 0.05)
 
 3. What is the most fitting conclusion from the regression model above?
-  - [ ] The R-squared does not tell us about the quality of our model fit. That is the job of the p-value.
+  - [ ] The R-squared does not tell us about the quality of our model fit, we should use p-value instead
   - [ ] The R-squared approximates 0.44, indicating a reasonable fit (the closer to 0 the better)
   - [ ] The R-squared approximates 0.44, indicating a poor fit (the closer to 1 the better)
-
-# Feature Selection
+___
 
 ## Feature Selection using Stepwise Regression
 
-Basen on the R-square alone, our `model_crime` might not indicate a good fit. The R-square of `model_crime` approximates 0.44, meaning the `model_crime` can only describes 44% from the total variability of our data. One way to improve the model is by adding more predictor variables. To do that, we can start by hypothesize another variables that is considered to be significant to predict `crime_rate`.
-
-We have learned a stepwise regression algorithm that enables us to perform an automated feature selection to predict `crime_rate` using `step()` function. Try to use the step() function with `direction = "backward"` parameter. Once you get the best model estimates, create a new model from it and store it under `model_step` object.
+Based on the R-squared alone, our `model_crime` might indicate a poor fit. The R-squared of `model_crime` approximates 0.44, which ideally needs to be improved upon by, for example, adding more predictor variables. One of the techniques for selecting predictor variables is using stepwise regression algorithm. Use the `step()` function with `direction="backward"` parameter and store the best model estimate under the `model_step` object.
 
 ```
 # your code here
 
 ```
-
-## Quiz Section
-
-After building the model, go ahead and check model_step summary and answer the question below.
-
-4. Based on the summary of our final model, which statement is **incorrect**?
+___
+4. Based on the summary of your final model, which statement is **incorrect**?
   - [ ] An increase of 1 of police_exp60 causes the value of crime_rate to increase by 10,265
   - [ ] An increase of 1 of unemploy_m24 causes the crime_rate to decrease by 6,087
   - [ ] An increase of 1 of mean_education causes the value of crime_rate to decrease by 18.01
   - [ ] Adjusted R-squared is a better metrics for evaluating our model compared to Multiple R-squared
-
-# Normality Assumption
+___
 
 ## Shapiro test for Normality test
 
-One of the assumption of linear regression stated that the error obtained from the model must distributed normally. We expect to have our error value to be normally distributed around the mean of 0.
-
-In previous tutorial, we have stored a linear regression model under `model_step` object. Let’s try to validate our normality assumption `shapiro.test()` function. This function requires us to pass in the residuals of our model.
+One of the assumptions for linear regression stated that the error obtained from the model must be distributed normally around the mean of 0. You will need to validate our normality assumption from `model_step` using `shapiro.test()` function. This function requires us to pass in the residuals of our model.
 
 ```
 # your code here
 
 ```
 
-Shapiro testing, use the following null and alternative hypothesis:
+For your reference, Shapiro testing use the following hypotheses:
 
-$H_0$ : Error is distributed normally
+$H_0$ : Error is distributed normally  
 
-$H_1$ : Error is not distributed normally
+$H_1$ : Error is not distributed normally  
 
-## Quiz Section
-
-Use the output from the test above to answer the following question:
-5. Based on Shapiro test we have perform, what conclusion can be drawn from the result?
+___
+5. Based on the Shapiro test you have performed, what conclusion can be drawn from the result?
   - [ ] Error is distributed normally (P-value higher than 0.05) 
   - [ ] Error is distributed normally (P-value lower than 0.05) 
   - [ ] Error is not distributed normally (P-value higher than 0.05) 
   - [ ] Error is not distributed normally (P-value lower than 0.05) 
-  
-
-# Heteroskedasticity Assumption
+___
 
 ## Breusch-Pagan for Heteroskedasticity Test
 
-To test wether or not our error is homoscedastic, you can use Breusch-Pagan test for a formal statistical test. This test use the following null and alternative hypothesis:
+Another assumption you need to test is whether or not the error of our model is homoscedastic. Homoscedastic means the error is distributed with equal variance over different data ranges. To test this behavior, you can use the `bptest` function from `lmtest` package and pass in our model.
 
-$H_0$: Error is considered Homoscedastic
+For your reference, Breusch-Pagan testing use the following hypotheses:
 
-$H_1$: Error is considered Heteroscedastic
+$H_0$: Error is considered Homoscedastic  
 
-Validate wether or not our error violates the no heteroscedasticiy assumption using `bptest` function from `lmtest` package. Pass in our `model_step` as the parameter to acquire the test result.
+$H_1$: Error is considered Heteroscedastic  
 
 ```
 # your code here
 
 ```
-
-## Quiz Section
-
-Use the output from the test above to answer the following question:
-
-6. Based on Breusch-Pagan test we have perform, what conclusion can be drawn from the result?
+___
+6. Based on Breusch-Pagan test you have performed, what conclusion can be drawn from the result?
   - [ ] Heteroscedasticity is not present
   - [ ] Heteroscedasticity is present
   - [ ] The data spreads normally
   - [ ] There is no correlation between residuals and target variable
-
-# No Multicollinearity Assumption
+___
 
 ## Variance Inflation Factor
 
-In linear regression, each predictor is assumed to be independent to each other. To test this, you can use the `vif` function of the `car` package to acquire each predictor variable’s `VIF` value. Let’s take our `model_step` object and pass in to the function and see if there any multicollinearity present.
+Using VIF value, we can determine whether or not there are multicollinearity between predictor variables. A high VIF value indicates a high correlation between the variables. You can use the `vif` function from `car` package from our model. Pass in our `model_step` object into the function and see if there's a multicollinearity in the model.
 
 ```
 # your code here
 
 ```
-
-If the `VIF` value is not greater than the value that is considered significant, we can safely assume that there are no multicollinearity between the variables.
-
-## Quiz Section
-
-Based on the VIF value from previous section, try to answer following question.
-
-7. From the multicolinearity test result, which interpretation is correct?
+___
+7. Based on the VIF value, which interpretation is correct?
   - [ ] inequality does not significantly affect crime_rate
   - [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
   - [ ] Multicollinearity is present in our model because the VIF values for all variables are below 10 
   - [ ] Variables with multicollinearity should not be removed from model
+  ___
 
-# Making Prediction
+## Predicting Unseen Data
 
-## Predict Unseen Data
-
-Since we have passed all our assumption test on previous sections, we will try to predict unseen data using `model_step` object. We have provided `crime_test.csv` dataset in github repository for you to use with `predict` function. Store the prediction value from our new data set under `pred_value` object.
-
-```
-# your code here
-
-```
-
-## Mean Squared Error
-
-Within our workshop, we have also learned various metrics to measure our model performance. One of the common metrics used is mean squared error (`MSE`). You can calculate the `MSE` of our prediction using `MSE` function from MLMetrics package. Store the `MSE` value under `mse_crime` object and don’t forget to specify `y_true` and `y_pred` parameter from MSE function.
+Along this quiz session, you have performed statistical tests to make sure the model passed the assumptions of a linear regression model. Now imagine you were given a new dataset that records the same socio-economic variables from different observations. The data is stored under `crime_test.csv`, please read in the data and store it under an object named `crime_test`. Next, create a prediction using the new data using our `model_step` object. You can store the prediction values under a new column in the `crime_test` data frame.
 
 ```
 # your code here
 
 ```
 
+Now pay attention to the new dataset provided. Among the variables you should see a `crime_rate` column describing the real crime rate value of the observations. Within the workshop you have learned some metrics to evaluate our model performance. Try to calculate the `MSE` of our `model_step` prediction. You can use the `MSE` function from `MLMetrics` package by passing in `y_true` and `y_pred` parameter.
+
+```
+# your code here
+
+```
+___
 8. What is the MSE value of the crime_test prediction result? (round to two decimal points)    
   - [ ] 55027.7
   - [ ] 46447.42
   - [ ] 45269.15
+___
