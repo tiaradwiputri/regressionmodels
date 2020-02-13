@@ -128,7 +128,7 @@ ___
 7. Based on the VIF value, which interpretation is correct?
   - [ ] inequality does not significantly affect crime_rate
   - [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
-  - [ ] Multicollinearity is present in our model because the VIF values for all variables are below 10 
+  - [ ] Multicollinearity is not present in our model because the VIF values for all variables are below 10 
   - [ ] Variables with multicollinearity should not be removed from model
   ___
 
