@@ -12,139 +12,149 @@ crime <- read.csv("data_input/crime.csv") %>%
 colnames(crime) <- c("percent_m", "is_south", "mean_education", "police_exp60", "police_exp59", "labour_participation", "m_per1000f", "state_pop", "nonwhites_per1000", "unemploy_m24", "unemploy_m39", "gdp", "inequality", "prob_prison", "time_prison", "crime_rate")
 ```
 
-To make sure you have loaded the data correctly, do a simple inspection of the data. Try to peek in using `head` or `tail` and see if the columns have been stored in its appropriate data types.
-```
-# your code here
-
-```
-
-Among all variables within our `crime` dataset, there is a `crime_rate` variable that describes the measure of crime rate of the United States in 1960 from different states. Imagine you’re working as a government analyst and would like to see how social-economic conditions could reflect on the crime rate in a state. Recall how we can inspect the correlation for each variable using `cor` or `ggcorr` from `GGally` package. Try it out on your own and see what are the possible predictor variables for our `crime_rate` variable.
+To make sure you have loaded the data correctly, do a simple data inspection. Try to peek our data frame by using any of the technique you have learned to get a better sense of the data.
 
 ```
 # your code here
 
 ```
 
-Based on the result of the previous chunk, you should know each variable’s correlation with `crime_rate` variable. Referring to the value, we can perform a preliminary variable selection for a suitable predictor variable.
+Among all variables within our `crime` dataset, there is a `crime_rate` variable that describes the measure of crime rate of the United States in 1960 from different states. Imagine you’re working as a government analyst and would like to see how social-economic conditions could reflect on the crime rate in a state. To do that, you will need to perform a exploratory analysis among the other variables.
 ___
-1. Which variable has little to no correlation with our `crime_rate` variable and might not be suitable as a predictor variable?
-  - [ ] crime_rate
+1. Which variable might **NOT** be suitable as a predictor variable for our `crime_rate`?
+  - [ ] gdp
   - [ ] police_exp59
   - [ ] unemploy_m39
   - [ ] nonwhites_per1000
 ___
 
-## Building Linear Regression    
+## Simple Linear Regression    
 
-From the data exploration process and the correlation information of our dataset, it is known that not all variables show a strong correlation with `crime_rate` variable. Let’s try to build a simple linear model using one of the highly correlated variables: `police_exp59`. Create a regression model using `lm()` function to predict `crime_rate` using `police_exp59` from our dataset and assign it to an object named `model_crime`.
+A simple linear regression could help you to identify the quantified correlation between target and predictor variable as linear model coefficient. Based on the insight you have found from the previous step, try to answer the following question!
+
+___
+2. Which of the following predictor variable that describes `crime_rate` variable as lineary negative slope and statistically significant (p-value lower than 0.05)? 
+  - [ ] police_exp59
+  - [ ] nonwhites_per1000
+  - [ ] prob_prison
+  - [ ] percent_m
+
+3. Among all simple linear regression models created from the variables listed in the second question, which one describes `crime_rate` the best?
+  - [ ] police_exp59, based on the highest R-squared value which indicates a good fit
+  - [ ] prob_prison, based on the lowest R-squared value which indicates a good fit
+  - [ ] nonwhites_per1000, based on the coefficient's highest p-value which indicates a good fit
+___
+
+## Multiple Linear Regression
+
+Using a simple linear regression limit model's capability of describing target variables using information from multiple variables. However, in building multiple linear regression, a variable selection process is required in order to pick the variables that adequately describes our target variable without having too much noise.
+
+One of the technique we have learned in the course is using the stepwise regression algorithm to find the best model estimate. Now try to create the model for our `crime_rate` variable using a stepwise algorithm. Recall that you are required to specify `direction` parameter in the function. Between all available algorithm directions, pick the one resulting in the lowest AIC and attempt the following question!
 
 ```
 # your code here
 
 ```
 ___
-2. Which of the following best describes the slope?**
-  - [ ] It's a negative slope, and is statistically insignificant (P-value higher than 0.05)
-  - [ ] It's a positive slope, and is statistically significant (P-value lower than 0.05)
-  - [ ] It's a positive slope, and is statistically insignificant (P-value higher than 0.05)
-  - [ ] It's a negative slope, and is statistically significant (P-value lower than 0.05)
-
-3. What is the most fitting conclusion from the regression model above?
-  - [ ] The R-squared does not tell us about the quality of our model fit, we should use p-value instead
-  - [ ] The R-squared approximates 0.44, indicating a reasonable fit (the closer to 0 the better)
-  - [ ] The R-squared approximates 0.44, indicating a poor fit (the closer to 1 the better)
-___
-
-## Feature Selection using Stepwise Regression
-
-Based on the R-squared alone, our `model_crime` might indicate a poor fit. The R-squared of `model_crime` approximates 0.44, which ideally needs to be improved upon by, for example, adding more predictor variables. One of the techniques for selecting predictor variables is using stepwise regression algorithm. Use the `step()` function with `direction="backward"` parameter and store the best model estimate under the `model_step` object.
-
-```
-# your code here
-
-```
-___
-4. Based on the summary of your final model, which statement is **incorrect**?
+4. Based on the model with the lowest AIC, which statement is **incorrect**?
   - [ ] An increase of 1 of police_exp60 causes the value of crime_rate to increase by 10,265
   - [ ] An increase of 1 of unemploy_m24 causes the crime_rate to decrease by 6,087
   - [ ] An increase of 1 of mean_education causes the value of crime_rate to decrease by 18.01
   - [ ] Adjusted R-squared is a better metrics for evaluating our model compared to Multiple R-squared
 ___
 
-## Shapiro test for Normality test
+## Assumptions Testing
 
-One of the assumptions for linear regression stated that the error obtained from the model must be distributed normally around the mean of 0. You will need to validate our normality assumption from `model_step` using `shapiro.test()` function. This function requires us to pass in the residuals of our model.
-
-```
-# your code here
-
-```
-
-For your reference, Shapiro testing use the following hypotheses:
+One of the assumptions for linear regression stated that the error obtained from the model must be distributed normally around the mean of 0. To test the assumption, we can use one of the formal statistics test, Shapiro test which tests the following hypotheses:
 
 $H_0$ : Error is distributed normally  
 
 $H_1$ : Error is not distributed normally  
 
+Pay attention at the following R result of using the  `shapiro.test` function on a given model's residual:
+
+```
+shapiro.test(model$residuals)
+```
+```
+#   Shapiro-Wilk normality test
+#
+# data:  model$residuals
+# W = 0.98511, p-value = 0.8051
+```
 ___
-5. Based on the Shapiro test you have performed, what conclusion can be drawn from the result?
+5. Based on the Shapiro test result shown in the previous code, what conclusion can be drawn from the result?
   - [ ] Error is distributed normally (P-value higher than 0.05) 
   - [ ] Error is distributed normally (P-value lower than 0.05) 
   - [ ] Error is not distributed normally (P-value higher than 0.05) 
   - [ ] Error is not distributed normally (P-value lower than 0.05) 
 ___
 
-## Breusch-Pagan for Heteroskedasticity Test
+Another assumption you need to test is whether or not the error of our model is homoscedastic indicating the error is distributed with equal variance over different data ranges. To test the assumption, we can use one of the formal statistics test, Breusch-pagan test which tests the following hypotheses:
 
-Another assumption you need to test is whether or not the error of our model is homoscedastic. Homoscedastic means the error is distributed with equal variance over different data ranges. To test this behavior, you can use the `bptest` function from `lmtest` package and pass in our model.
+$H_0$: Error is homoscedastic  
 
-For your reference, Breusch-Pagan testing use the following hypotheses:
+$H_1$: Error is heteroscedastic  
 
-$H_0$: Error is considered Homoscedastic  
-
-$H_1$: Error is considered Heteroscedastic  
+Pay attention at the following R result of using the `bptest` function from `lmtest` package by passing in the given model:
 
 ```
-# your code here
-
+library(lmtest)
+bptest(model)
+```
+```
+#   studentized Breusch-Pagan test
+#
+# data:  model
+# BP = 13.51, df = 8, p-value = 0.09546
 ```
 ___
-6. Based on Breusch-Pagan test you have performed, what conclusion can be drawn from the result?
+6. Based on Breusch-Pagan test result, what conclusion can be drawn?
   - [ ] Heteroscedasticity is not present
   - [ ] Heteroscedasticity is present
   - [ ] The data spreads normally
   - [ ] There is no correlation between residuals and target variable
 ___
 
-## Variance Inflation Factor
+## Multicollinearity
 
-Using VIF value, we can determine whether or not there are multicollinearity between predictor variables. A high VIF value indicates a high correlation between the variables. You can use the `vif` function from `car` package from our model. Pass in our `model_step` object into the function and see if there's a multicollinearity in the model.
+Using VIF value, we can determine whether or not there are multicollinearity between predictor variables in our model. A high VIF value indicates a high correlation between predictor variables. Pay attention at the following R result of using the `vif` function from `car` and passing in the given model:
 
 ```
-# your code here
-
+library(car)
+vif(model)
+```
+```
+#      percent_m mean_education   police_exp60     m_per1000f   unemploy_m24 
+#       2.131963       4.189684       2.560496       1.932367       4.360038 
+#   unemploy_m39     inequality    prob_prison 
+#       4.508106       3.731074       1.381879 
 ```
 ___
-7. Based on the VIF value, which interpretation is correct?
+7. Based on the VIF values shown on the previous result, which interpretation is correct?
   - [ ] inequality does not significantly affect crime_rate
   - [ ] An increase of 1 value on mean_education causes the value of crime_rate to increase by 4.1
-  - [ ] Multicollinearity is not present in our model because the VIF values for all variables are below 10 
-  - [ ] Variables with multicollinearity should not be removed from model
+  - [ ] Multicollinearity is not present in our model because the VIF values for all variables are considered to be small 
+  - [ ] Variable `unemploy_m39` should be removed from model
   ___
 
-## Predicting Unseen Data
+## Evaluating Model Performance
 
-Along this quiz session, you have performed statistical tests to make sure the model passed the assumptions of a linear regression model. Now imagine you were given a new dataset that records the same socio-economic variables from different observations. The data is stored under `crime_test.csv`, please read in the data and store it under an object named `crime_test`. Next, create a prediction using the new data using our `model_step` object. You can store the prediction values under a new column in the `crime_test` data frame.
-
-```
-# your code here
+Along this quiz session, you have performed statistical tests to make sure the model passed the assumptions of a linear regression model. Now imagine you were given a new dataset that records the same socio-economic variables from different observations. The data is stored under `crime_test.csv`, please read in the data to your R session. Pay attention to the new dataset provided. Among the variables you should see a `crime_rate` column describing the real crime rate value of the observations. 
 
 ```
-
-Now pay attention to the new dataset provided. Among the variables you should see a `crime_rate` column describing the real crime rate value of the observations. Within the workshop you have learned some metrics to evaluate our model performance. Try to calculate the `MSE` of our `model_step` prediction. You can use the `MSE` function from `MLMetrics` package by passing in `y_true` and `y_pred` parameter.
+# Your code here
 
 ```
-# your code here
+
+Say you are given a model requirement from an existing project and were asked to perform a model evaluation on the provided test dataset. The project requires you to calculate the **mean squared error** of the following model:
+
+```
+model <- lm(formula = crime_rate ~ percent_m + mean_education + police_exp60 + 
+    m_per1000f + unemploy_m24 + unemploy_m39 + inequality + prob_prison, 
+    data = crime)
+
+# Your code here
 
 ```
 ___
